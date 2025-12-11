@@ -1,5 +1,7 @@
 # gYCSB
 
+![gYCSB Logo](logo.svg)
+
 A general-purpose YCSB (Yahoo! Cloud Serving Benchmark) implementation supporting CPU, CUDA, and distributed execution with Python and C++ bindings.
 
 [YCSB](https://github.com/brianfrankcooper/YCSB) is an industry-standard benchmark framework for evaluating the performance of key-value and cloud serving stores. This implementation extends YCSB with GPU acceleration and distributed benchmarking capabilities.
