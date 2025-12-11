@@ -1,0 +1,56 @@
+warmup_runs: 0
+num_records: 1_000_000
+scan_size: 100
+distribution: "uniform"
+zipfian_theta: 0.99
+orderedinserts: true
+data_integrity: true
+results_folder: "benchmark/results"
+load_data_output_file: null
+operations_file: null
+ops: 500
+target_qps: 0
+min_field_length: 10
+max_field_length: 10
+field_count: 16
+key_type: "np_int64"
+operation_sets:
+    # Multi_Get_1024:
+    #     multiget: [1, 1024, 0]
+    # Multi_Get_2048:
+    #     multiget: [1, 2048, 0]
+    # Multi_Get_4096:
+    #     multiget: [1, 4096, 0]
+    # Multi_Get_8192:
+    #     multiget: [1, 8192, 0]
+    # Multi_Get_16384:
+    #     multiget: [1, 16384, 0]
+    # Multi_Get_32768:
+    #     multiget: [1, 32768, 0]
+    Multi_Get_65536:
+        multiget: [1, 65536, 0]
+    Multi_Get_131072:
+        multiget: [1, 131072, 0]
+    Multi_Get_262144:
+        multiget: [1, 262144, 0]
+    
+bindings:
+    hkv_baseline:
+        binding_type: "cpp"
+        gpu_ids: [1]
+        value_type: "float"
+        hbm_gb: 15
+        gpu_init_capacity: 500_000
+        gpu_max_capacity: 10_000_000
+        multiset_operation: "accum_or_assign"
+        multiget_operation: "find"
+	
+    hkv_kernelopt:
+        gpu_init_capacity: 500_000
+        gpu_max_capacity: 10_000_000
+        hbm_gb: 15
+        gpu_ids: [1]
+        binding_type: "cpp"
+        value_type: "float"
+        multiset_operation: "accum_or_assign"
+        multiget_operation: "find"

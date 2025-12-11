@@ -1,0 +1,655 @@
+/* ========================================
+   Modern Bootstrap Explorer Styles
+   ======================================== */
+
+/* Explorer content container */
+.explorer-content {
+    padding: 20px;
+    background: transparent;
+    height: 100%;
+}
+
+/* File list container */
+.file-list-container {
+    margin-bottom: 20px;
+}
+
+/* File item buttons - Modern Bootstrap style */
+.file-item-button {
+    width: 100%;
+    padding: 10px 12px;
+    margin: 3px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: #495057;
+    justify-content: flex-start;
+    font-size: 14px;
+}
+
+.file-item-button:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    transform: translateX(2px);
+}
+
+.file-item-button.file-item-selected {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+    box-shadow: 0 2px 4px rgba(13, 110, 253, 0.25);
+}
+
+.file-item-button.file-item-selected:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.file-item-button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    outline: none;
+}
+
+/* File name text styling */
+.file-name-text {
+    font-size: 13px;
+    user-select: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+}
+
+/* Empty state styling */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+/* ===== BENCHMARK PAGE STYLES ===== */
+/* Benchmark explorer header */
+.benchmark-explorer-header {
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+/* Benchmark actions container */
+.benchmark-actions-container {
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+/* Direct children of benchmark actions container */
+.benchmark-actions-container > .benchmark-action-button,
+.benchmark-actions-container > div[id*="upload"] {
+    width: 100%;
+    max-width: 250px;
+}
+
+/* Benchmark action buttons */
+.benchmark-action-button {
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.benchmark-action-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Benchmark explorer divider */
+.benchmark-explorer-divider {
+    margin: 20px 0;
+    border-color: #dee2e6;
+    opacity: 0.5;
+}
+
+/* ===== RESULT PAGE STYLES ===== */
+/* Result explorer header */
+.result-explorer-header {
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+/* Result actions container */
+.result-actions-container {
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+/* Direct children of result actions container */
+.result-actions-container > .result-action-button,
+.result-actions-container > div[id*="upload"] {
+    width: 100%;
+    max-width: 250px;
+}
+
+/* Result action buttons */
+.result-action-button {
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.result-action-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Result explorer divider */
+.result-explorer-divider {
+    margin: 20px 0;
+    border-color: #dee2e6;
+    opacity: 0.5;
+}
+
+/* Remove default button styling for link buttons */
+.btn-link {
+    text-decoration: none !important;
+}
+
+.btn-link:hover {
+    text-decoration: none !important;
+}
+
+/* ========================================
+   Main Content Area - Modern Styles
+   ======================================== */
+
+/* Page title styling */
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* Card enhancements */
+.card {
+    border: none;
+    border-radius: 8px;
+    overflow: visible; /* Changed from hidden to allow dropdowns to overflow */
+}
+
+.card-header {
+    border: none;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    overflow: hidden; /* Keep overflow hidden for header to maintain rounded corners */
+    border-radius: 8px 8px 0 0; /* Ensure header has rounded top corners */
+}
+
+.card-body {
+    padding: 1.5rem;
+    overflow: visible; /* Allow dropdowns in card body to overflow */
+}
+
+/* Custom dropdown styling */
+.custom-dropdown .Select-control {
+    border-color: #ced4da;
+    border-radius: 6px;
+}
+
+/* Ensure dropdown menus can overflow their containers */
+.custom-dropdown,
+.custom-dropdown > div {
+    overflow: visible !important;
+}
+
+/* Fix for Dash Dropdown (React-Select) - ensure menu can overflow card */
+.Select-menu-outer {
+    z-index: 9999 !important;
+    position: absolute !important;
+    overflow: visible !important;
+}
+
+/* Ensure parent containers don't clip dropdown menus */
+.card-body .Select,
+.card-body .Select-control,
+.card-body .Select-menu-outer,
+.card .Select,
+.card .Select-control,
+.card .Select-menu-outer {
+    overflow: visible !important;
+}
+
+/* Ensure containers with bg-light class don't clip dropdowns */
+.bg-light .Select,
+.bg-light .Select-menu-outer,
+.bg-light .custom-dropdown {
+    overflow: visible !important;
+}
+
+/* Ensure Row and Col containers don't clip dropdowns */
+.row .Select-menu-outer,
+[class*="col"] .Select-menu-outer {
+    overflow: visible !important;
+    z-index: 9999 !important;
+}
+
+/* Ensure all parent containers of dropdowns allow overflow */
+.Select,
+.Select-control,
+.Select-menu,
+.Select-menu-outer {
+    position: relative;
+}
+
+/* Fix for nested containers that might clip dropdowns */
+.card-body > *,
+.bg-light > * {
+    position: relative;
+}
+
+/* Ensure dropdown menu portal can display properly */
+body > .Select-menu-outer {
+    z-index: 10000 !important;
+}
+
+/* Chart display area */
+.chart-display-area {
+    min-height: 400px;
+    background: #ffffff;
+    border-radius: 4px;
+}
+
+/* Button group improvements */
+.btn-group .btn {
+    font-weight: 500;
+}
+
+/* ========================================
+   Results Table Horizontal Scroll
+   ======================================== */
+
+.results-table-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+}
+
+/* Style the scrollbar for better UX */
+.results-table-container::-webkit-scrollbar {
+    height: 10px;
+}
+
+.results-table-container::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+.results-table-container::-webkit-scrollbar-thumb {
+    background: #adb5bd;
+    border-radius: 5px;
+    transition: background 0.2s;
+}
+
+.results-table-container::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+}
+
+/* Ensure table doesn't break layout */
+.results-table-container table {
+    min-width: 100%;
+    white-space: nowrap;
+    margin-bottom: 0;
+}
+
+/* Bootstrap table improvements */
+.table {
+    font-size: 14px;
+}
+
+.table thead th {
+    border-top: none;
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* Make table cells not wrap */
+.results-table-container td,
+.results-table-container th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px; /* Prevent extremely wide cells */
+    padding: 0.75rem;
+    vertical-align: middle;
+}
+
+/* Add hover effect to show full content */
+.results-table-container td:hover,
+.results-table-container th:hover {
+    overflow: visible;
+    white-space: normal;
+    max-width: none;
+}
+
+/* ========================================
+   Additional Visual Enhancements
+   ======================================== */
+
+/* Button hover effects */
+.btn {
+    transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Card shadow effects */
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.08) !important;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.shadow-sm:hover {
+    box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Badge styling */
+.badge {
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 0.35em 0.65em;
+}
+
+/* Lead text */
+.lead {
+    font-size: 1.1rem;
+    font-weight: 300;
+    margin-bottom: 0;
+}
+
+/* Form labels */
+label.fw-bold {
+    color: #495057;
+}
+
+/* Background light sections */
+.bg-light {
+    background-color: #f8f9fa !important;
+    border: 1px solid #e9ecef;
+}
+
+/* Form control improvements */
+.form-control, 
+.form-select,
+.form-control:focus,
+.form-select:focus {
+    border-radius: 6px;
+    border-color: #ced4da;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Input group styling */
+.input-group {
+    border-radius: 6px;
+}
+
+/* Button group enhancements */
+.btn-group-lg > .btn {
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+}
+
+/* ========================================
+   Resizable Sidebar (VSCode-style)
+   ======================================== */
+
+/* Resizer handle */
+.resizer {
+    flex: 0 0 5px;
+    width: 5px;
+    cursor: col-resize;
+    background-color: transparent;
+    position: relative;
+    z-index: 1;
+    user-select: none;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.resizer:hover {
+    background-color: rgba(13, 110, 253, 0.3);
+}
+
+.resizer.resizing {
+    background-color: rgba(13, 110, 253, 0.5);
+}
+
+/* Visual indicator line on hover/active */
+.resizer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 2px;
+    width: 1px;
+    height: 100%;
+    background-color: #dee2e6;
+    transition: all 0.2s ease-in-out;
+}
+
+.resizer:hover::after,
+.resizer.resizing::after {
+    background-color: #0d6efd;
+    width: 3px;
+    left: 1px;
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.4);
+}
+
+/* ========================================
+   Responsive Layout Styles
+   ======================================== */
+
+/* Desktop/Large screens (lg and above) - Resizable sidebar */
+@media (min-width: 992px) {
+    .results-row {
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        height: calc(100vh - 56px);
+        background-color: #f8f9fa;
+    }
+    
+    .file-explorer-col {
+        flex: 0 0 280px; /* Default width: 280px, can be resized */
+        width: 280px;
+        min-width: 180px; /* Minimum width */
+        max-width: 600px; /* Maximum width */
+        border-right: 1px solid #e0e0e0;
+        padding: 0;
+        height: calc(100vh - 56px);
+        background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+    }
+    
+    .left-scroll-container {
+        height: calc(100vh - 56px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0;
+    }
+    
+    .main-content-col {
+        flex: 1; /* Take remaining space */
+        min-width: 0; /* Allow flex item to shrink below content size */
+        height: calc(100vh - 56px);
+        background-color: #ffffff;
+    }
+    
+    .right-scroll-container {
+        height: calc(100vh - 56px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0 30px 20px 30px;
+        background-color: #f8f9fa;
+    }
+    
+    /* Show resizer only on desktop */
+    .resizer {
+        display: flex;
+    }
+    
+    /* Smooth scrollbar for main content */
+    .right-scroll-container::-webkit-scrollbar {
+        width: 10px;
+    }
+    
+    .right-scroll-container::-webkit-scrollbar-track {
+        background: #f8f9fa;
+    }
+    
+    .right-scroll-container::-webkit-scrollbar-thumb {
+        background: #adb5bd;
+        border-radius: 5px;
+    }
+    
+    .right-scroll-container::-webkit-scrollbar-thumb:hover {
+        background: #6c757d;
+    }
+    
+    .left-scroll-container::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    .left-scroll-container::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    .left-scroll-container::-webkit-scrollbar-thumb {
+        background: #ced4da;
+        border-radius: 4px;
+    }
+    
+    .left-scroll-container::-webkit-scrollbar-thumb:hover {
+        background: #adb5bd;
+    }
+}
+
+/* Tablet and Mobile (below lg) - Stacked layout */
+@media (max-width: 991px) {
+    .results-row {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        height: auto;
+        background-color: #f8f9fa;
+    }
+    
+    .file-explorer-col {
+        flex: 0 0 auto;
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid #dee2e6;
+        padding: 0;
+        background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+        max-height: 400px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    
+    .left-scroll-container {
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0;
+    }
+    
+    .main-content-col {
+        flex: 1;
+        width: 100%;
+        height: auto;
+        min-height: calc(100vh - 480px);
+        background-color: #ffffff;
+    }
+    
+    .right-scroll-container {
+        height: auto;
+        overflow-y: visible;
+        overflow-x: hidden;
+        padding: 0 15px 20px 15px;
+        background-color: #f8f9fa;
+    }
+    
+    .page-title {
+        padding-top: 20px;
+        font-size: 2rem;
+    }
+    
+    .results-container {
+        padding: 0;
+    }
+    
+    /* Hide resizer on mobile/tablet */
+    .resizer {
+        display: none;
+    }
+    
+    /* Adjust explorer content padding for mobile */
+    .explorer-content {
+        padding: 15px;
+    }
+}
+

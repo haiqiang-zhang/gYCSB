@@ -1,0 +1,8 @@
+*.egg-info/
+__pycache__/
+/results/
+.clangd
+.vscode/
+.cache/
+build/
+/HierarchicalKV/
