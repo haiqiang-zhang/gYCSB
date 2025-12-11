@@ -78,7 +78,7 @@ python -m obsidian_server
 Once running, submit benchmark tasks via the API endpoint:
 - **API Base URL**: `http://localhost:5000/benchmarks`
 
-For Obsidian note-taking integration, install the [obsidian-ycsb-plugin](https://github.com/haiqiang-zhang/obsidian-ycsb-plugin) first.
+For Obsidian note-taking integration, install the [obsidian-gycsb-plugin](https://github.com/haiqiang-zhang/obsidian-gycsb-plugin) first.
 
 ## License
 
