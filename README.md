@@ -1,6 +1,6 @@
 # gYCSB
 
-![gYCSB Logo](logo.svg)
+![gYCSB Logo](logo.png)
 
 A general-purpose YCSB (Yahoo! Cloud Serving Benchmark) implementation supporting CPU, CUDA, and distributed execution with Python and C++ bindings.
 
