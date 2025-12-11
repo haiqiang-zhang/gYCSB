@@ -80,26 +80,9 @@ Once running, submit benchmark tasks via the API endpoint:
 
 For Obsidian note-taking integration, install the [obsidian-ycsb-plugin](https://github.com/haiqiang-zhang/obsidian-ycsb-plugin) first.
 
-## Project Structure
-
-```
-gYCSB/
-├── example/              # Example benchmark scripts
-│   ├── single_run.py    # Single-node benchmark example
-│   ├── batch_run.py     # Batch execution example
-│   └── batch_run_dims.py # Distributed batch example
-├── gycsb/               # Core Python implementation
-├── libgycsb/            # C++/CUDA core library
-├── bindings_py/         # Python bindings
-├── bindings_cpp/        # C++ bindings
-├── visualizer/          # Web-based visualization dashboard
-├── obsidian_server/      # RESTful API server for workload management
-└── run_distributed_benchmark.py  # Distributed benchmark runner
-```
-
 ## License
 
-[Add your license information here]
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
