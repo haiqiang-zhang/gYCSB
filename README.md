@@ -83,7 +83,3 @@ For Obsidian note-taking integration, install the [obsidian-ycsb-plugin](https:/
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-[Add contribution guidelines if applicable]
