@@ -53,20 +53,23 @@ cmake .. -Dsm=86 && make -j${nproc} && cmake --install .
 
 ### Running Benchmarks
 
+#### CLI
+
+
+#### Python API
+
 Example scripts are provided in the `example/` directory:
 
 - **Single Node**: `example/single_run.py` - Run benchmarks on a single machine
-- **Batch Execution**: `example/batch_run.py` - Run multiple benchmark configurations
-- **Distributed Batch**: `example/batch_run_dims.py` - Batch execution for distributed setups
-
-For distributed benchmarking across multiple nodes, see `run_distributed_benchmark.py` in the root directory.
+- **Batch Execution**: `example/batch_run.py` - Run multiple benchmark configurations 
+- **Distributed Benchmarking**: `example/run_distributed_benchmark.py` - Run benchmarks across multiple nodes
 
 ### Visualizer
 
 Launch the interactive web-based visualizer to analyze benchmark results:
 
 ```bash
-python -m visualizer
+gycsb visualizer --host 0.0.0.0 --port 8052
 ```
 
 The visualizer provides real-time performance metrics, throughput analysis, and latency distributions.
@@ -76,11 +79,11 @@ The visualizer provides real-time performance metrics, throughput analysis, and 
 Start the RESTful API server for managing benchmark tasks:
 
 ```bash
-python -m obsidian_server
+gycsb obsidian_server --host 0.0.0.0 --port 8051
 ```
 
 Once running, submit benchmark tasks via the API endpoint:
-- **API Base URL**: `http://localhost:5000/benchmarks`
+- **API Base URL**: `http://localhost:8051/benchmarks`
 
 For Obsidian note-taking integration, install the [obsidian-gycsb-plugin](https://github.com/haiqiang-zhang/obsidian-gycsb-plugin) first.
 

@@ -24,3 +24,7 @@ dependencies = [
 
 [tool.setuptools.packages.find]
 where = ["."]
+
+
+[project.scripts]
+gycsb = "gycsb.cli:main"
