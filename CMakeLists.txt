@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
 cmake_policy(SET CMP0077 NEW)
-project(mlkv_plus LANGUAGES CUDA CXX)
+project(gYCSB LANGUAGES CUDA CXX)
 # ------------------------------------------------------------
 # Export compile commands for clangd
 set(CMAKE_CUDA_USE_RESPONSE_FILE OFF CACHE BOOL "" FORCE)
