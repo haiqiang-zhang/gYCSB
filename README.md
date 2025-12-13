@@ -57,28 +57,22 @@ cmake .. -Dsm=86 && make -j${nproc} && cmake --install .
 
 The gYCSB CLI provides several modes for running benchmarks and managing services:
 
-**Single Run Mode**
+* Single Run Mode: Run a single benchmark with a specific configuration:
+  ```bash
+  gycsb singlerun --runner_config <config_file_path> --running_name <result_name>
+  ```
 
-Run a single benchmark with a specific configuration:
+  - `--runner_config`: Path to the runner configuration file
+  - `--running_name`: Name for this benchmark run (used as the results filename in the results folder)
 
-```bash
-gycsb singlerun --runner_config <config_file_path> --running_name <result_name>
-```
+* Batch Run Mode: Run multiple benchmarks by iterating over variable configurations:
+  ```bash
+  gycsb batchrun --runner_config <config_file_path> --running_name <result_name> --variables <variable_list>
+  ```
 
-- `--runner_config`: Path to the runner configuration file
-- `--running_name`: Name for this benchmark run (used as the results filename in the results folder)
-
-**Batch Run Mode**
-
-Run multiple benchmarks by iterating over variable configurations:
-
-```bash
-gycsb batchrun --runner_config <config_file_path> --running_name <result_name> --variables <variable_list>
-```
-
-- `--runner_config`: Path to the runner configuration file
-- `--running_name`: Base name for benchmark runs (used as prefix for results files)
-- `--variables`: List of variables to iterate over for batch execution
+  - `--runner_config`: Path to the runner configuration file
+  - `--running_name`: Base name for benchmark runs (used as prefix for results files)
+  - `--variables`: List of variables to iterate over for batch execution
 
 
 #### Python API
