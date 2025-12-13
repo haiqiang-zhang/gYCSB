@@ -3,7 +3,7 @@ import cupy as cp
 import random
 import json
 import os
-from typing import Type
+from typing import Type, List, Tuple
 import numpy as np
 import pandas as pd
 from functools import partial
@@ -14,6 +14,7 @@ from .WorkloadGenerator import WorkloadGenerator, _generate_operation_worker, Op
 from concurrent.futures import ThreadPoolExecutor, as_completed as as_completed_thread
 from concurrent.futures import ProcessPoolExecutor, as_completed as as_completed_process
 import multiprocessing as mp
+
 
 class BindingType(Enum):
     PYTHON = "python"
@@ -491,11 +492,7 @@ class YCSBController:
         
         return results.time_seconds, results.integrity, results.integrity_accuracy
         
-
-    def run_py(self, num_ops=10_000, num_streams=0):
-        print(f"Starting workload {self.operations} with {num_ops} operations...")
-        if self.target_qps:
-            print(f"Target QPS: {self.target_qps}")
+    def load_operations_py(self, num_ops) -> List[Tuple]:
         # Try to load operations from file
         loaded_operation_data = self._load_operations()
         all_operation_data, all_op_list = self._generate_operations(loaded_operation_data, num_ops)
@@ -508,17 +505,11 @@ class YCSBController:
                 total_ops += (op_count * param[1])
             else:
                 total_ops += op_count
-        
-        
+    
         # Shuffle the combined op_list
         random.shuffle(all_op_list)
-        
         op_counters = {op: 0 for op in all_operation_data.keys()}
-        
         tasks = []
-        
-        # stream = cp.cuda.Stream()
-        
         for op in all_op_list:
             if isinstance(op, list):
                 op_name, _ = op
@@ -552,49 +543,11 @@ class YCSBController:
                     else:
                         raise ValueError(f"Invalid operation: {op}")
                 op_counters[op_name] += 1
-                
-        if num_streams is None:
-            num_streams = len(tasks)
-
-        executor = ThreadPoolExecutor(max_workers=num_streams,
-                                      initializer=self.bind_instance.init_each_thread)
-        
-        # warm up
-        for _ in range(num_streams):
-            executor.submit(lambda: None).result()
-            
-        
-        start_event = cp.cuda.Event()
-        end_event = cp.cuda.Event()
-        
-        binding_return_data = []
-            
-        print("Starting benchmark...")    
-        # Start timing
-        if self.data_integrity:
-            start_event.record()
-            futures = [executor.submit(fn, *args) for fn, args, _ in tasks]
-            for future in as_completed_thread(futures):
-                binding_return_data.append(future.result())
-        else:
-            start_event.record()
-            futures = [executor.submit(fn, *args) for fn, args, _ in tasks]
-            for future in as_completed_thread(futures):
-                future.result()
-            
-            
-        cp.cuda.Stream.null.synchronize()
-        end_event.record()
-        end_event.synchronize()
-        
-        executor.shutdown(wait=True)
-        
-        total_time = cp.cuda.get_elapsed_time(start_event, end_event) / 1000
-        
+        return tasks
+    
+    def check_data_integrity_py(self, binding_return_data, num_ops):        
         integrity = True
-        
-        # check data integrity
-        print(f"Checking data integrity...")
+
         if self.data_integrity:
             cpu_count = mp.get_context('fork').cpu_count()
             executor = ProcessPoolExecutor(mp_context=mp.get_context('fork'), max_workers=cpu_count)
@@ -626,8 +579,48 @@ class YCSBController:
             print(f"Data integrity check passed")
         else:
             print(f"Data integrity type: {self.data_integrity} do not need to check")
-        
+            
+        return integrity
 
+    def run_py(self, num_ops=10_000, num_streams=0):
+        print(f"Starting workload {self.operations} with {num_ops} operations...")
+        if self.target_qps:
+            print(f"Target QPS: {self.target_qps}")
+        
+        tasks = self.load_operations_py(num_ops)
+        if num_streams == 0:
+            num_streams = 1
+
+        executor = ThreadPoolExecutor(max_workers=num_streams,
+                                      initializer=self.bind_instance.init_each_thread)
+        
+        # warm up
+        for _ in range(num_streams):
+            executor.submit(lambda: None).result()
+            
+        start_event = cp.cuda.Event()
+        end_event = cp.cuda.Event()
+        binding_return_data = []
+        print("Starting benchmark...")    
+        # Start timing
+        if self.data_integrity:
+            start_event.record()
+            futures = [executor.submit(fn, *args) for fn, args, _ in tasks]
+            for future in as_completed_thread(futures):
+                binding_return_data.append(future.result())
+        else:
+            start_event.record()
+            futures = [executor.submit(fn, *args) for fn, args, _ in tasks]
+            for future in as_completed_thread(futures):
+                future.result()
+            
+        cp.cuda.Stream.null.synchronize()
+        end_event.record()
+        end_event.synchronize()
+        executor.shutdown(wait=True)
+        
+        total_time = cp.cuda.get_elapsed_time(start_event, end_event) / 1000
+        integrity = self.check_data_integrity_py(binding_return_data, num_ops)
         return total_time, integrity, -1
 
     def cleanup(self):
@@ -642,8 +635,6 @@ def check_rows_integrity_ycsb(rows: pd.DataFrame, workload_gen):
                 return False
     return True      
         
-
-
 
 def generate_records_chunk(chunk_size, start_idx, process_id, workload_gen):
     """Worker function to generate a chunk of records"""

@@ -2,6 +2,8 @@ import yaml
 from typing import Dict, Any
 import os
 
+SYSTEM_SETTING_PATH = "gycsb_setting.yaml"
+
 def __load_config(config_path: str) -> Dict[str, Any]:
     """Load configuration from YAML file."""
     with open(config_path, 'r') as f:
@@ -51,3 +53,22 @@ def get_binding_config(binding_name: str):
     config_path = os.path.join(os.path.dirname(__file__), "..", "binding_config.yaml")
     config = __load_config(config_path)
     return config[binding_name]
+
+
+
+def load_system_setting():
+    path = os.path.join(os.path.dirname(__file__), "..", SYSTEM_SETTING_PATH)
+    if not os.path.exists(path):
+        return {}
+    with open(path, "r", encoding="utf-8") as f:
+        return yaml.safe_load(f.read())
+
+def save_system_setting(config):
+    # Load existing config
+    existing_config = load_system_setting()
+    # Update only the provided fields
+    existing_config.update(config)
+    # Save the merged config
+    path = os.path.join(os.path.dirname(__file__), SYSTEM_SETTING_PATH)
+    with open(path, "w", encoding="utf-8") as f:
+        yaml.safe_dump(existing_config, f, allow_unicode=True, default_flow_style=False)

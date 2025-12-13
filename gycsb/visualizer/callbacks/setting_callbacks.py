@@ -1,5 +1,5 @@
 from dash import callback, Output, Input, State
-from gycsb.visualizer.config_utils import load_config, save_config
+from gycsb.ConfigLoader import load_system_setting, save_system_setting
 
 
 def register_setting_callbacks():
@@ -25,9 +25,9 @@ def register_setting_callbacks():
         """Save the operation file directory to config when it changes"""
         if new_value and new_value != state_value:
             try:
-                config = load_config()
+                config = load_system_setting()
                 config['operation_file_dir'] = new_value
-                save_config(config)
+                save_system_setting(config)
             except Exception as e:
                 print(f"Error saving config: {e}")
         return new_value

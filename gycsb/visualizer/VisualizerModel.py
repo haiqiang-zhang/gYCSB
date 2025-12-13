@@ -2,35 +2,14 @@ import json
 import time
 import os
 import glob
-from gycsb.visualizer.config_utils import load_config
+from gycsb.ConfigLoader import load_system_setting
 
 class VisualizerModel:
     def __init__(self):
-        self.results_dir = load_config()['results_folder']
+        self.results_dir = load_system_setting().get('results_folder', '')
         self.available_results = self.get_available_results()
         self.current_file = None
         self.results = None
-
-
-    def _load_status(self):
-        """Load benchmark status from file"""
-        if os.path.exists(self.status_file):
-            try:
-                with open(self.status_file, 'r') as f:
-                    return json.load(f)
-            except:
-                return None
-        return None
-
-    def _save_status(self, status):
-        """Save benchmark status to file"""
-        if status is None:
-            if os.path.exists(self.status_file):
-                os.remove(self.status_file)
-            return
-        with open(self.status_file, 'w') as f:
-            json.dump(status, f, indent=4)
-        self.current_status = status
         
         
         

@@ -2,8 +2,10 @@ from .YCSBController import YCSBController
 import itertools
 import os
 import json
+from gycsb.ConfigLoader import load_system_setting
 
-RESULTS_FOLDER = "/pub/nfs-data/zhaiqiang/autogpudb/benchmark/results"
+
+RESULTS_FOLDER = load_system_setting().get('results_folder', '')
 
 
 def run(workload_config: dict, binding_name: str, binding_config: dict, warmup: bool = False) -> dict:
@@ -166,6 +168,10 @@ def run_all_benchmarks(config: dict, running_name: str, variables: list = None) 
     # Generate variable combinations
     combinations = generate_variable_combinations(config, variables or [])
     total_runs = len(combinations) * len(binding_names)
+    
+    if total_runs == 0:
+        print(f"No combinations found for variables: {variables or 'None'}")
+        return {}
     
     print(f"\n{'='*60}")
     print(f"Batch Run Configuration:")

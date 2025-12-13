@@ -1,7 +1,7 @@
 import dash_bootstrap_components as dbc
 from dash import html
 import os
-from gycsb.visualizer.config_utils import load_config
+from gycsb.ConfigLoader import load_system_setting
 
 def create_process_management_card():
     """Create a card for process management with modern styling"""
@@ -52,7 +52,7 @@ def create_directory_config_card():
                         dbc.Input(
                             id="operation-file-dir",
                             type="text",
-                            value=load_config()['operation_file_dir'],
+                            value=load_system_setting().get('operation_file_dir', ''),
                             placeholder="Enter path to operation files directory"
                         )
                     ], className="mb-3"),

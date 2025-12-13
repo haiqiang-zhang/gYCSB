@@ -199,82 +199,21 @@ class DistYCSBController(YCSBController):
         print(f"Starting workload {self.operations} with {num_ops} operations...")
         if self.target_qps:
             print(f"Target QPS: {self.target_qps}")
-        # Try to load operations from file
-        loaded_operation_data = self._load_operations()
         
         # generate operations through one rank
         if self.bind_instance.rank() == 0:
-            all_operation_data, all_op_list = self._generate_operations(loaded_operation_data, num_ops, keys_type=keys_type)
-            random.shuffle(all_op_list)
+            tasks = self.load_operations_py(num_ops)
             payload = {
-                'all_operation_data': all_operation_data,
-                'all_op_list': all_op_list
+                'tasks': tasks,
             }
-            
         else:
             payload = {}         
 
         payload = [payload]
         self.bind_instance.broadcast_object_list(payload, 0)
-        
         payload = payload[0]
-        all_operation_data = payload['all_operation_data']
-        all_op_list = payload['all_op_list']
-        
-        
-        # Calculate total operations including existing ones
-        total_ops = 0
-        for op, param in self.operations.items():
-            op_count = int(param[0] * num_ops) if isinstance(param, list) else int(param * num_ops)
-            if isinstance(param, list):
-                total_ops += (op_count * param[1])
-            else:
-                total_ops += op_count
-        
-        
-
-        
-        op_counters = {op: 0 for op in all_operation_data.keys()}
-        
-        tasks = []
-        
-        # stream = cp.cuda.Stream()
-        
-        for op in all_op_list:
-            if isinstance(op, list):
-                op_name, _ = op
-                data = all_operation_data[op_name][op_counters[op_name]]
-                
-                if op_name == 'multiget':
-                    tasks.append((self.bind_instance.multiget, 
-                                  (data['keys'], ), 
-                                  (op_name, op_counters[op_name])))
-                elif op_name == 'multiset':
-                    tasks.append((self.bind_instance.multiset, 
-                                  (data['key_list'], data['value_list']),
-                                  (op_name, op_counters[op_name])))
-                elif op_name == 'multiput':
-                    # multiput uses the same multiset method but with existing keys
-                    tasks.append((self.bind_instance.multiset, 
-                                  (data['key_list'], data['value_list']),
-                                  (op_name, op_counters[op_name])))
-                else:
-                    data = all_operation_data[op][op_counters[op]]
-                    op_counters[op] += 1
-                    if op == 'insert':
-                        tasks.append((self.bind_instance.insert, (data['key'], data['values'])))
-                    elif op == 'read':
-                        tasks.append((self.bind_instance.read, (data['key'])))
-                    elif op == 'update':
-                        tasks.append((self.bind_instance.update, (data['key'], data['fieldkey'], 
-                                               data['value'])))   
-                    elif op == 'scan':
-                        tasks.append((self.bind_instance.scan, (data['start_key'])))
-                    else:
-                        raise ValueError(f"Invalid operation: {op}")
-                op_counters[op_name] += 1
+        tasks = payload['tasks']
             
-        
         start_event = cp.cuda.Event()
         end_event = cp.cuda.Event()
         
@@ -303,49 +242,7 @@ class DistYCSBController(YCSBController):
         
         total_time = cp.cuda.get_elapsed_time(start_event, end_event) / 1000
         
-        integrity = True
-        
-        # check data integrity
-        print(f"Checking data integrity...")
-        if self.data_integrity == DataIntegrity.CUSTOMIZED:
-            for i, (validation, data) in enumerate(binding_return_data):
-                keys = all_operation_data[validation[0]][validation[1]]['keys']
-                if not self.bind_instance.check_data_integrity(keys, data):
-                    integrity = False
-                if i % 100 == 0:
-                    print(f"{i}/{num_ops} data integrity check passed")
-            print(f"Data integrity check passed")
-        elif self.data_integrity == DataIntegrity.YCSB:
-            cpu_count = mp.get_context('fork').cpu_count()
-            executor = ProcessPoolExecutor(mp_context=mp.get_context('fork'), max_workers=cpu_count)
-            futures = []
-            for i, data in enumerate(binding_return_data):
-                test_result: pd.DataFrame = self.bind_instance.results_postprocess(data)
-                
-                each_worker_check_size = test_result.shape[0] // cpu_count
-                remainder = test_result.shape[0] % cpu_count
-                
-                current_idx = 0
-                for j in range(cpu_count):
-                    start_idx = current_idx
-                    current_idx += each_worker_check_size
-                    if j < remainder:
-                        current_idx += 1
-                    futures.append(executor.submit(check_rows_integrity_ycsb, test_result.iloc[start_idx:current_idx], self.workload_gen))
-
-                if i % 10 == 0:
-                    print(f"{i}/{num_ops} data integrity check submitted")
-            i = 0
-            for future in as_completed_process(futures):
-                if not future.result():
-                    integrity = False
-                i += 1
-                if i % 100 == 0:
-                    print(f"{i}/{len(futures)} data integrity check passed")
-            executor.shutdown(wait=True)
-            print(f"Data integrity check passed")
-        else:
-            print(f"Data integrity type: {self.data_integrity} do not need to check")
+        integrity = self.check_data_integrity_py(binding_return_data, num_ops)
 
         return total_time, integrity, -1
         
