@@ -51,7 +51,6 @@ else()
     message(STATUS "CUDA not found - CUDA support will be disabled")
 endif()
 
-find_package(OpenMP REQUIRED)
 find_package(nlohmann_json 3.12.0 REQUIRED)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libgycsb/include)

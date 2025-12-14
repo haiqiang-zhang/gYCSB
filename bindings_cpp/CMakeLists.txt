@@ -20,8 +20,11 @@ if(HAVE_CUDA)
 # link_binding_to_bridge(BRIDGE_TYPE CUDA hkv_binding)
 
 
-add_library(mlkvplus_binding OBJECT ${CMAKE_CURRENT_SOURCE_DIR}/mlkvplus_binding.cu)
-set_target_properties(mlkvplus_binding PROPERTIES CUDA_ARCHITECTURES OFF POSITION_INDEPENDENT_CODE ON)
+add_library(mlkvplus_binding SHARED ${CMAKE_CURRENT_SOURCE_DIR}/mlkvplus_binding.cu)
+set_target_properties(mlkvplus_binding PROPERTIES 
+    CUDA_ARCHITECTURES OFF 
+    POSITION_INDEPENDENT_CODE ON
+)
 target_compile_features(mlkvplus_binding PUBLIC cxx_std_20 cuda_std_20)
 target_link_libraries(mlkvplus_binding PRIVATE nlohmann_json::nlohmann_json mlkv_plus)
 target_link_options(mlkvplus_binding PRIVATE "-Wl,-Bsymbolic")

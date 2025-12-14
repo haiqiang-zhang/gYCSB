@@ -77,9 +77,13 @@ endfunction()
 
 add_library(bridge_cpu SHARED src/bridge_cpu.cc)
 target_compile_features(bridge_cpu PUBLIC cxx_std_20)
-set_target_properties(bridge_cpu PROPERTIES CUDA_ARCHITECTURES OFF POSITION_INDEPENDENT_CODE ON)
+set_target_properties(bridge_cpu PROPERTIES 
+    CUDA_ARCHITECTURES OFF 
+    POSITION_INDEPENDENT_CODE ON
+    BUILD_RPATH_USE_ORIGIN ON
+    INSTALL_RPATH_USE_LINK_PATH ON
+)
 target_link_options(bridge_cpu PRIVATE "-Wl,--no-as-needed")
-
 
 # ------------------------------------------------------------
 # Please link the binding of CPU libraries to the bridge_cpu library
@@ -105,7 +109,12 @@ endif()
 if(HAVE_CUDA)
 add_library(bridge_cuda SHARED src/bridge_cuda.cu)
 target_compile_features(bridge_cuda PUBLIC cxx_std_20 cuda_std_20)
-set_target_properties(bridge_cuda PROPERTIES CUDA_ARCHITECTURES OFF POSITION_INDEPENDENT_CODE ON)
+set_target_properties(bridge_cuda PROPERTIES 
+    CUDA_ARCHITECTURES OFF 
+    POSITION_INDEPENDENT_CODE ON
+    BUILD_RPATH_USE_ORIGIN ON
+    INSTALL_RPATH_USE_LINK_PATH ON
+)
 
 # ------------------------------------------------------------
 # Please link the binding of CUDA libraries to the bridge_cuda library

@@ -271,6 +271,11 @@ def run_single_benchmark(config: dict, running_name: str):
         
         result = run(config, binding_name, binding_config, warmup=False)
         
+        
+        # check the directory exists
+        if not os.path.exists(RESULTS_FOLDER):
+            os.makedirs(RESULTS_FOLDER)
+        
         # Append to the results file
         results = []
         if not os.path.exists(f"{RESULTS_FOLDER}/{running_name}.json"):

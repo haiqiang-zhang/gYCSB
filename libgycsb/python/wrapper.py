@@ -9,14 +9,9 @@ import numpy as np
 from typing import List
 
 try:
-    from ycsb_binding import ycsb_binding
-except (ModuleNotFoundError, ImportError) as e:
-    import os, sys
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    sys.path.append(current_dir)
-    import ycsb_binding
+    from gycsb_python_binding import gycsb_python_binding   
 except:
-    ycsb_binding = None
+    gycsb_python_binding = None
     
     
 class CPPOperation:
@@ -83,11 +78,11 @@ class YCSBBridge:
         Factory function to create a typed bridge.
         """
         if key_type == "uint64" and value_type == "double":
-            self._bridge = ycsb_binding.YCSBBridgeCUDA_uint64_double if isCuda else ycsb_binding.YCSBBridgeCPU_uint64_double
-            self._operation_class = ycsb_binding.Operation_uint64_double
+            self._bridge = gycsb_python_binding.YCSBBridgeCUDA_uint64_double if isCuda else gycsb_python_binding.YCSBBridgeCPU_uint64_double
+            self._operation_class = gycsb_python_binding.Operation_uint64_double
         elif key_type == "uint64" and value_type == "float":
-            self._bridge = ycsb_binding.YCSBBridgeCUDA_uint64_float if isCuda else ycsb_binding.YCSBBridgeCPU_uint64_float
-            self._operation_class = ycsb_binding.Operation_uint64_float
+            self._bridge = gycsb_python_binding.YCSBBridgeCUDA_uint64_float if isCuda else gycsb_python_binding.YCSBBridgeCPU_uint64_float
+            self._operation_class = gycsb_python_binding.Operation_uint64_float
         else:
             raise ValueError(f"Unsupported key-value type combination: {key_type}, {value_type}")
         
@@ -96,9 +91,9 @@ class YCSBBridge:
         
     @staticmethod
     def get_available_bindings():
-        if ycsb_binding is not None:
-            cuda_bindings = ycsb_binding.YCSBBridgeCUDA_uint64_double.get_available_bindings()
-            cpu_bindings = ycsb_binding.YCSBBridgeCPU_uint64_double.get_available_bindings()
+        if gycsb_python_binding is not None:
+            cuda_bindings = gycsb_python_binding.YCSBBridgeCUDA_uint64_double.get_available_bindings()
+            cpu_bindings = gycsb_python_binding.YCSBBridgeCPU_uint64_double.get_available_bindings()
             return {"cuda": cuda_bindings, "cpu": cpu_bindings}
         else:
             return {}

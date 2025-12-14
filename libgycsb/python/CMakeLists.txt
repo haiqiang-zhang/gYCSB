@@ -9,10 +9,10 @@ message(STATUS "Python_INCLUDE_DIRS: ${Python_INCLUDE_DIRS}")
 message(STATUS "Python_VERSION: ${Python_VERSION}")
 
 
-set(module_name ycsb_binding)
+set(module_name gycsb_python_binding)
 
 # Create the pybind11 module
-pybind11_add_module(${module_name} ycsb_binding.cpp)
+pybind11_add_module(${module_name} gycsb_python_binding.cpp)
 
 # Set properties
 target_compile_features(${module_name} PRIVATE cxx_std_20)
@@ -25,7 +25,10 @@ set_target_properties(${module_name} PROPERTIES CUDA_ARCHITECTURES OFF)
 # Set RPATH to find the ycsb library and RocksDB
 set(EXTRA_RPATH_DIRS
     "${CMAKE_BINARY_DIR}"
-    "${CMAKE_BINARY_DIR}/benchmark/ycsb_cpp"
+    "${CMAKE_BINARY_DIR}/libgycsb"
+    "${CMAKE_BINARY_DIR}/bindings_cpp"
+    "${CMAKE_BINARY_DIR}/gYCSB/libgycsb"
+    "${CMAKE_BINARY_DIR}/gYCSB/bindings_cpp"
 )
 
 
@@ -56,13 +59,7 @@ execute_process(
 
 message(STATUS "PYTHON_SITE: ${PYTHON_SITE}")
 
-# Option to install locally instead of system-wide
-option(INSTALL_PYTHON_LOCAL "Install Python binding locally" OFF)
-if(INSTALL_PYTHON_LOCAL)
-  set(PYTHON_INSTALL_DIR "${PROJECT_SOURCE_DIR}/benchmark/ycsb_cpp/python")
-else()
-  set(PYTHON_INSTALL_DIR "${PYTHON_SITE}/${module_name}")
-endif()
+set(PYTHON_INSTALL_DIR "${PYTHON_SITE}/${module_name}")
 
 # install the module to python site-packages
 install(TARGETS ${module_name} 

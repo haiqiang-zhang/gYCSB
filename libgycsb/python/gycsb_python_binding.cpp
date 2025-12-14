@@ -93,7 +93,7 @@ namespace py = pybind11;
                    "Get list of available CPU bindings for uint64_t keys and " VALUE_TYPE_NAME " values");
 
 
-PYBIND11_MODULE(ycsb_binding, m) {
+PYBIND11_MODULE(gycsb_python_binding, m) {
     m.doc() = "YCSB Benchmark Python Bindings";
 
     // Generate bindings for double

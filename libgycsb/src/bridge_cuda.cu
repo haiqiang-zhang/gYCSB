@@ -12,6 +12,10 @@ template<typename K, typename V>
 YCSBBridgeCUDA<K, V>::YCSBBridgeCUDA(const std::string& binding_name) {
     BindingInfo<K, V>* binding_info = BindingRegistry<K, V>::getInstance().getBindingInfo(binding_name);
 
+    if (binding_info == nullptr) {
+        std::cerr << "Binding '" << binding_name << "' not found in registry." << std::endl;
+        throw std::runtime_error("Binding '" + binding_name + "' not found in registry.");
+    }
 
     if (!binding_info->isCuda){
         std::cerr << binding_name + " is not CUDA binding." << std::endl;
