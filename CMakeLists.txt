@@ -1,17 +1,11 @@
 cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
-cmake_policy(SET CMP0077 NEW)
-project(gYCSB LANGUAGES CUDA CXX)
+project(gYCSB LANGUAGES CXX)
 # ------------------------------------------------------------
 # Export compile commands for clangd
-set(CMAKE_CUDA_USE_RESPONSE_FILE OFF CACHE BOOL "" FORCE)
-set(CMAKE_CUDA_USE_RESPONSE_FILE_FOR_INCLUDES OFF CACHE BOOL "" FORCE)
-set(CMAKE_CUDA_USE_RESPONSE_FILE_FOR_OBJECTS  OFF CACHE BOOL "" FORCE)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # ------------------------------------------------------------
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CUDA_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
@@ -23,8 +17,20 @@ endif()
 
 
 
-find_package(CUDAToolkit REQUIRED)
-
+# Find CUDA toolkit (optional)
+find_package(CUDAToolkit QUIET)
+if(CUDAToolkit_FOUND)
+    enable_language(CUDA)
+    set(HAVE_CUDA ON)
+    message(STATUS "CUDA found - CUDA support will be enabled")
+    
+    # Set CUDA-specific options
+    set(CMAKE_CUDA_STANDARD 20)
+    set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+    set(CMAKE_CUDA_USE_RESPONSE_FILE OFF CACHE BOOL "" FORCE)
+    set(CMAKE_CUDA_USE_RESPONSE_FILE_FOR_INCLUDES OFF CACHE BOOL "" FORCE)
+    set(CMAKE_CUDA_USE_RESPONSE_FILE_FOR_OBJECTS  OFF CACHE BOOL "" FORCE)
+    add_compile_options($<$<COMPILE_LANGUAGE:CUDA>:-lineinfo>)
 
 foreach(cuda_arch ${sm})
   list(APPEND cuda_arch_list ${cuda_arch})
@@ -40,10 +46,15 @@ endif()
 foreach(cuda_arch ${cuda_arch_list})
   set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -gencode arch=compute_${cuda_arch},code=sm_${cuda_arch}")
 endforeach()
+else()
+    set(HAVE_CUDA OFF)
+    message(STATUS "CUDA not found - CUDA support will be disabled")
+endif()
 
 find_package(OpenMP REQUIRED)
 find_package(nlohmann_json 3.12.0 REQUIRED)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libgycsb/include)
 
 
 add_subdirectory(libgycsb)

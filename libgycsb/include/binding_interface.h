@@ -58,7 +58,9 @@ public:
     virtual void multiput(uint32_t batch_size,
                          const K* d_keys,
                          const V* d_values,
-                         const CallContext& ctx = {}) = 0;
+                         const CallContext& ctx = {}) {
+        throw std::runtime_error("multiput is not implemented");
+    }
 
 
     virtual void get(const K* d_keys,

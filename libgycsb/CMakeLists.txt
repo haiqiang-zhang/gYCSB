@@ -1,5 +1,3 @@
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-
 # ------------------
 # Function to link binding libraries to bridge_cpu or bridge_cuda
 # Usage: link_binding_to_bridge(BRIDGE_TYPE CPU|CUDA binding_target1 [binding_target2 ...])
