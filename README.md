@@ -42,6 +42,10 @@ pip install -e .
 
 ### 3. Build C++/CUDA Components
 
+Please rename `bindings_cpp/CMakeLists.txt.template` to `bindings_cpp/CMakeLists.txt` and modify the CMakeLists.txt file based on the template instructions.
+
+Then run:
+
 ```bash
 mkdir -p build && cd build
 cmake .. -Dsm=86 && make -j${nproc} && cmake --install .
