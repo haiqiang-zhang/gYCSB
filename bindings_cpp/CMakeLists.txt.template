@@ -9,7 +9,7 @@ if(HAVE_CUDA)
 #     POSITION_INDEPENDENT_CODE ON)
 # target_compile_features(hkv_binding PUBLIC cxx_std_20 cuda_std_20)
 # target_link_libraries(hkv_binding PRIVATE nlohmann_json::nlohmann_json)
-# target_include_directories(hkv_binding PRIVATE ${PROJECT_SOURCE_DIR}/hkv//include)
+# target_include_directories(hkv_binding PRIVATE path/to/hkv/include) # <-- MODIFY THIS LINE
 # target_link_options(hkv_binding PRIVATE "-Wl,-Bsymbolic")
 # target_compile_options(hkv_binding PRIVATE
 #     $<$<COMPILE_LANGUAGE:CXX>:-O3 -march=native>
