@@ -5,4 +5,4 @@ __pycache__/
 .vscode/
 .cache/
 build/
-/bindings_cpp/CMakeFiles.txt
+/bindings_cpp/CMakeLists.txt
