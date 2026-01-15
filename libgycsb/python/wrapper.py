@@ -9,7 +9,7 @@ import numpy as np
 from typing import List
 
 try:
-    from gycsb_python_binding import gycsb_python_binding   
+    from gycsb_python_binding import gycsb_python_binding
 except:
     gycsb_python_binding = None
     

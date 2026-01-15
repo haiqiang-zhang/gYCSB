@@ -22,13 +22,17 @@ set_target_properties(${module_name} PROPERTIES CUDA_ARCHITECTURES OFF)
 
 
 
+# Get the relative path from project source to this submodule
+# This handles cases where the submodule is named differently (e.g., "benchmark" instead of "gYCSB")
+file(RELATIVE_PATH SUBMODULE_REL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../.." "${CMAKE_CURRENT_SOURCE_DIR}/../..")
+
 # Set RPATH to find the ycsb library and RocksDB
 set(EXTRA_RPATH_DIRS
     "${CMAKE_BINARY_DIR}"
     "${CMAKE_BINARY_DIR}/libgycsb"
     "${CMAKE_BINARY_DIR}/bindings_cpp"
-    "${CMAKE_BINARY_DIR}/gYCSB/libgycsb"
-    "${CMAKE_BINARY_DIR}/gYCSB/bindings_cpp"
+    "${CMAKE_BINARY_DIR}/${SUBMODULE_REL_PATH}/libgycsb"
+    "${CMAKE_BINARY_DIR}/${SUBMODULE_REL_PATH}/bindings_cpp"
 )
 
 
